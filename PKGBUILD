@@ -1,34 +1,44 @@
 # $Id$
-# Maintainer: TheKit <nekit1000 at gmail.com>
+# Contributor: TheKit <nekit1000 at gmail.com>
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Contributor: Alexey Andreyev <aa13q@ya.ru>
 # Maintainer: James Kittsmiller (AJSlye) <james@nulogicsystems.com>
 
-pkgname=libglacierapp-git
+_host="github.com"
+_project=nemomobile-ux
+_basename=glacier-app
+_branch=master
+
+_gitname=lib${_basename//-/}
+pkgname=qt5-$_basename-git
+
 pkgver=0.4.0.r0.g3cf6a55
+
 pkgrel=1
 pkgdesc="Glacier Application library"
 arch=('x86_64' 'aarch64')
-url="https://github.com/nemomobile-ux/libglacierapp"
-license=('GPL')
-depends=('mlite' 'qt5-declarative')
+url="https://$_host/$_project/$_gitname#branch=$_branch"
+license=('LGPL-2.0-or-later')
+depends=('qt5-declarative')
 makedepends=('git')
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
-source=('git+https://github.com/nemomobile-ux/libglacierapp.git')
+source=("${pkgname}::git+${url}")
 md5sums=('SKIP')
 
 pkgver() {
-	cd "$srcdir/${pkgname%-git}"
-	git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+    cd "${srcdir}/${pkgname}"
+    git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 build() {
-	cd "$srcdir/${pkgname%-git}"
-	qmake
-	make
+    cd "${srcdir}/${pkgname}"
+    qmake
+    make
 }
 
 package() {
-	cd "$srcdir/${pkgname%-git}"
-	make INSTALL_ROOT="$pkgdir/" install
+    cd "${srcdir}/${pkgname}"
+    make INSTALL_ROOT="$pkgdir/" install
 }
  
