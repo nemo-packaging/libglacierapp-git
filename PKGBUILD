@@ -12,14 +12,14 @@ _branch=master
 _gitname=lib${_basename//-/}
 pkgname=qt5-$_basename-git
 
-pkgver=0.4.0.r0.g3cf6a55
+pkgver=0.5.0.r0.gfeb122a
 
 pkgrel=1
 pkgdesc="Glacier Application library"
 arch=('x86_64' 'aarch64')
 url="https://$_host/$_project/$_gitname#branch=$_branch"
 license=('LGPL-2.0-or-later')
-depends=('qt5-declarative')
+depends=('qt5-declarative' 'qt5-quickcontrols-nemo-git')
 makedepends=('git')
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
