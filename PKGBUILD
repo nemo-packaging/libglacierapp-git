@@ -12,14 +12,14 @@ _branch=master
 _gitname=lib${_basename//-/}
 pkgname=qt5-$_basename-git
 
-pkgver=0.5.0.r0.gfeb122a
+pkgver=0.6.r0.g4268f50
 
 pkgrel=1
 pkgdesc="Glacier Application library"
 arch=('x86_64' 'aarch64')
 url="https://$_host/$_project/$_gitname#branch=$_branch"
 license=('LGPL-2.0-or-later')
-depends=('qt5-declarative' 'qt5-quickcontrols-nemo-git')
+depends=('qt5-quickcontrols-nemo-git')
 makedepends=('git')
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
@@ -33,12 +33,21 @@ pkgver() {
 
 build() {
     cd "${srcdir}/${pkgname}"
-    qmake
-    make
+    mkdir -p build
+    cd build
+    cmake \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DBUILD_EXAMPLES=ON \
+	-DCMAKE_VERBOSE_MAKEFILE=ON \
+	..
+    cmake --build .
 }
 
 package() {
     cd "${srcdir}/${pkgname}"
-    make INSTALL_ROOT="$pkgdir/" install
+    cd build
+    make DESTDIR="$pkgdir/" install
 }
  
